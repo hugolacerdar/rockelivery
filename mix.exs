@@ -43,7 +43,8 @@ defmodule Rockelivery.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:credo, "~> 1.5", only: [:test, :dev], reuntime: false}
+      {:credo, "~> 1.5", only: [:test, :dev], reuntime: false},
+      {:pbkdf2_elixir, "~> 1.3"}
     ]
   end
 
