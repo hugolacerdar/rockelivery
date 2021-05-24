@@ -60,5 +60,114 @@ defmodule RockeliveryWeb.UsersControllerTest do
 
       assert response == ""
     end
+
+    test "when id doesn't exist, returns an error", %{conn: conn} do
+      id = "2a723b3f-8850-452c-bdbf-28381edEfd32"
+
+      insert(:user)
+
+      response =
+        conn
+        |> delete(Routes.users_path(conn, :delete, id))
+        |> json_response(:not_found)
+
+      assert %{"message" => "User not found"} == response
+    end
+  end
+
+  describe "update/2" do
+    test "when there is a user with the given id and params are valid, updates the user", %{
+      conn: conn
+    } do
+      id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
+      insert(:user)
+
+      params = %{"email" => "hero@cmail.com"}
+
+      response =
+        conn
+        |> put(Routes.users_path(conn, :update, id, params))
+        |> response(:ok)
+
+      assert %{
+               "user" => %{
+                 "address" => "Rua 2",
+                 "age" => 26,
+                 "cpf" => "12345678923",
+                 "email" => "hero@cmail.com",
+                 "name" => "Hugo",
+                 "id" => "2a723b3f-8850-452c-bdbf-28b81edefd32"
+               }
+             } == Jason.decode!(response)
+    end
+
+    test "when there is a user with the given id and any of the params is invalid, returns an error",
+         %{
+           conn: conn
+         } do
+      id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
+      insert(:user)
+
+      params = %{"email" => "herocmail.com"}
+
+      response =
+        conn
+        |> put(Routes.users_path(conn, :update, id, params))
+        |> response(:bad_request)
+
+      assert %{"message" => %{"email" => ["has invalid format"]}} == Jason.decode!(response)
+    end
+
+    test "when id doesn't exist, returns an error", %{conn: conn} do
+      id = "2a723b3f-8850-452c-bdbf-28381edEfd32"
+
+      insert(:user)
+
+      response =
+        conn
+        |> put(Routes.users_path(conn, :update, id))
+        |> json_response(:not_found)
+
+      assert %{"message" => "User not found"} == response
+    end
+  end
+
+  describe "show/2" do
+    test "when id exists, return the user", %{conn: conn} do
+      id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
+
+      insert(:user)
+
+      response =
+        conn
+        |> get(Routes.users_path(conn, :show, id))
+        |> json_response(:ok)
+
+      expected = %{
+        "user" => %{
+          "email" => "hugo@mailc.com",
+          "address" => "Rua 2",
+          "age" => 26,
+          "cpf" => "12345678923",
+          "id" => "2a723b3f-8850-452c-bdbf-28b81edefd32",
+          "name" => "Hugo"
+        }
+      }
+
+      assert response == expected
+    end
+
+    test "when id doesn't exist, returns an error", %{conn: conn} do
+      id = "2a723b3f-8850-452c-bdbf-28381edEfd32"
+
+      insert(:user)
+
+      response =
+        conn
+        |> get(Routes.users_path(conn, :show, id))
+        |> json_response(:not_found)
+
+      assert %{"message" => "User not found"} == response
+    end
   end
 end
