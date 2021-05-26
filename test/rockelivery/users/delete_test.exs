@@ -19,7 +19,7 @@ defmodule Rockelivery.Users.DeleteTest do
                %User{
                  address: "Rua 2",
                  age: 26,
-                 cep: "12345678",
+                 cep: "01001000",
                  cpf: "12345678923",
                  email: "hugo@mailc.com",
                  id: "2a723b3f-8850-452c-bdbf-28b81edefd32",
