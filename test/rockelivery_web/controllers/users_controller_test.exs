@@ -4,6 +4,8 @@ defmodule RockeliveryWeb.UsersControllerTest do
   import Mox
   import Rockelivery.Factory
 
+  alias RockeliveryWeb.Auth.Guardian
+
   describe "create/2" do
     test "when all params are valid, creates the user", %{conn: conn} do
       params = build(:user_params)
@@ -54,9 +56,17 @@ defmodule RockeliveryWeb.UsersControllerTest do
   end
 
   describe "delete/2" do
+    setup %{conn: conn} do
+      user = insert(:user)
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
+    end
+
     test "when there is a user with the given id, deletes the user", %{conn: conn} do
       id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
-      insert(:user)
 
       response =
         conn
@@ -69,8 +79,6 @@ defmodule RockeliveryWeb.UsersControllerTest do
     test "when id doesn't exist, returns an error", %{conn: conn} do
       id = "2a723b3f-8850-452c-bdbf-28381edEfd32"
 
-      insert(:user)
-
       response =
         conn
         |> delete(Routes.users_path(conn, :delete, id))
@@ -81,11 +89,19 @@ defmodule RockeliveryWeb.UsersControllerTest do
   end
 
   describe "update/2" do
+    setup %{conn: conn} do
+      user = insert(:user)
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
+    end
+
     test "when there is a user with the given id and params are valid, updates the user", %{
       conn: conn
     } do
       id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
-      insert(:user)
 
       params = %{"email" => "hero@cmail.com"}
 
@@ -111,7 +127,6 @@ defmodule RockeliveryWeb.UsersControllerTest do
            conn: conn
          } do
       id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
-      insert(:user)
 
       params = %{"email" => "herocmail.com"}
 
@@ -126,8 +141,6 @@ defmodule RockeliveryWeb.UsersControllerTest do
     test "when id doesn't exist, returns an error", %{conn: conn} do
       id = "2a723b3f-8850-452c-bdbf-28381edEfd32"
 
-      insert(:user)
-
       response =
         conn
         |> put(Routes.users_path(conn, :update, id))
@@ -138,10 +151,17 @@ defmodule RockeliveryWeb.UsersControllerTest do
   end
 
   describe "show/2" do
+    setup %{conn: conn} do
+      user = insert(:user)
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
+    end
+
     test "when id exists, return the user", %{conn: conn} do
       id = "2a723b3f-8850-452c-bdbf-28b81edefd32"
-
-      insert(:user)
 
       response =
         conn
@@ -164,8 +184,6 @@ defmodule RockeliveryWeb.UsersControllerTest do
 
     test "when id doesn't exist, returns an error", %{conn: conn} do
       id = "2a723b3f-8850-452c-bdbf-28381edEfd32"
-
-      insert(:user)
 
       response =
         conn
