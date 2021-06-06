@@ -9,6 +9,7 @@ defmodule RockeliveryWeb.Router do
 
   pipeline :auth do
     plug RockeliveryWeb.Auth.Pipeline
+    plug UUIDChecker
   end
 
   scope "/api", RockeliveryWeb do
