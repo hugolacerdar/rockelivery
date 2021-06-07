@@ -18,7 +18,7 @@ user_params = %{
   cep: "12345678",
   cpf: "12345678901",
   email: "banana@banana.com",
-  password: "123456",
+  password: "banana",
   name: "Hugo"
 }
 
