@@ -6,5 +6,4 @@ defmodule Rockelivery.Repo.Migrations.CreateItemCategoryType do
     down_query = "DROP TYPE item_category;"
     execute(up_query, down_query)
   end
-
 end
