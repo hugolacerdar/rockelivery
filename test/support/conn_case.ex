@@ -16,6 +16,7 @@ defmodule RockeliveryWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -24,7 +25,6 @@ defmodule RockeliveryWeb.ConnCase do
       import Phoenix.ConnTest
       import RockeliveryWeb.ConnCase
 
-      alias Ecto.Adapters.SQL.Sandbox
       alias RockeliveryWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
