@@ -78,8 +78,8 @@ jobs:
 
       - uses: mhanberg/gigalixir-action@v0.4.0
         with:
-          GIGALIXIR_APP: simple-khaki-alleycat secrets
           GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
           GIGALIXIR_PASSWORD: ${{ secrets.GIGALIXIR_PASSWORD }}
-          MIGRATIONS: false
+          GIGALIXIR_APP: simple-khaki-alleycat secrets
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          MIGRATIONS: false
